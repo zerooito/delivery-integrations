@@ -48,7 +48,7 @@ class MerchantTest extends TestCase
         $merchant = new Merchant($token['accessToken']);
         $merchants = $merchant->getMerchants();
         $merchantStatus = $merchant->getMerchantStatus($merchants[0]['id']);
-        dd($merchantStatus);
+
         $this->assertNotEmpty($merchantStatus);
     }
 
