@@ -32,6 +32,6 @@ class Authentication
             return [];
         }
 
-        return $response->body();
+        return json_decode($response->body(), true);
     }
 }
