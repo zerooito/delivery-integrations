@@ -23,4 +23,14 @@ class Order extends Model
         'event_id',
         'customer_id'
     ];
+
+    public static function getAllOrdersPlaced($customerId)
+    {
+        return self::where('customer_id', $customerId)->where('status', 'PLACED')->get();
+    }
+
+    public static function getAllOrdersConfirmed($customerId)
+    {
+        return self::where('customer_id', $customerId)->where('status', 'CONFIRMED')->get();
+    }
 }

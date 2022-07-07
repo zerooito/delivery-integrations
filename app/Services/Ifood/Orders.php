@@ -21,9 +21,23 @@ class Orders
     {
         $response = Http::withToken($this->accessToken)->post($this->urlIfood. $orderId . '/confirm');
 
-        // TODO -> Fazer a mudança de status do pedido no banco de dados.
+        $order = Order::where('order_id', $orderId)->get()->first();
+        $order->status = 'CONFIRMED';
+        $order->save();
 
-        Log::debug('Response acknowledgement: ' . var_export($response, true));
+        Log::debug('Response confirm order: ' . var_export($response, true));
+        return json_decode($response->body(), true);
+    }
+
+    public function startPrepareByOrderId($orderId)
+    {
+        $response = Http::withToken($this->accessToken)->post($this->urlIfood. $orderId . '/startPreparation');
+
+        $order = Order::where('order_id', $orderId)->get()->first();
+        $order->status = 'PREPARATION_STARTED';
+        $order->save();
+
+        Log::debug('Response prepare order: ' . var_export($response, true));
         return json_decode($response->body(), true);
     }
 

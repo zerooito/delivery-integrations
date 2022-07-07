@@ -42,14 +42,15 @@ class Events
     public function postAcknowledgment($params)
     {
         $response = Http::withToken($this->accessToken)->post($this->urlIfood . '/acknowledgment', $params);
-        var_dump($response->body());
+
         $order = new Order;
         
         $order->order_id =  $params[0]['orderId'];
         $order->event_id =  $params[0]['id'];
         $order->code =  $params[0]['code'];
-        $order->full_code =  $params[0]['fullCode'];
+        $order->full_code = $params[0]['fullCode'];
         $order->customer_id =  $params[0]['customer_id'];
+        $order->status = $params[0]['fullCode'];
 
         $order->save();
 
