@@ -41,7 +41,8 @@ class EventsTest extends TestCase
                 ],
                 "code" => "PLC",
                 "orderId" => "07110e1b-8191-4670-baed-407219481ffb",
-                "id" => "cd40582b-0ef2-4d52-bc7c-507fdff12e21"
+                "id" => "cd40582b-0ef2-4d52-bc7c-507fdff12e21",
+                "customer_id" => $data['id']
             ]
         ];
         $event = $events->postAcknowledgment($params);
@@ -69,7 +70,22 @@ class EventsTest extends TestCase
         $events = new Events($token['accessToken'], $merchants[0]['id']);
         $event = $events->getEventsPolling();
 
-        $this->assertEmpty($event);
+        if (!empty($event)) {
+            $params = [
+                [
+                    "createdAt" => $event[0]['createdAt'],
+                    "fullCode" => $event[0]['fullCode'],
+                    "code" => $event[0]['code'],
+                    "orderId" => $event[0]['orderId'],
+                    "id" => $event[0]['id'],
+                    "customer_id" => $data['id']
+                ]
+            ];
+
+            $this->assertEmpty($events->postAcknowledgment($params));
+        } else {
+            $this->assertEmpty($event);
+        }
     }
     
 }

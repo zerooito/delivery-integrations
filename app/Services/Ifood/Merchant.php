@@ -27,4 +27,42 @@ class Merchant
         return json_decode($response->body(), true);
     }
 
+    public function getMerchantInterruptionByMerchantId($merchantId)
+    {
+        $response = Http::withToken($this->accessToken)->get($this->urlIfood . '/' . $merchantId . '/interruptions');
+        Log::debug('Response generate merchant ' . $merchantId . ' interruption: ' . var_export($response, true));
+        return json_decode($response->body(), true);
+    }
+
+    public function postMerchantInterruptionById($merchantId, $body)
+    {
+        $response = Http::withToken($this->accessToken)
+                        ->withHeaders([
+                            'Content-Type' => 'application/json'
+                        ])
+                        ->post(
+                            $this->urlIfood . '/' . $merchantId . '/interruptions', 
+                            $body
+                        );
+
+        Log::debug('Response generate merchant ' . $merchantId . ' interruption: ' . var_export($response, true));
+
+        return json_decode($response->body(), true);
+    }
+
+    public function deleteMerchantInterruptionByIdAndMerchantId($merchantId, $interruptionId)
+    {
+        $response = Http::withToken($this->accessToken)
+                        ->withHeaders([
+                            'Content-Type' => 'application/json'
+                        ])
+                        ->delete(
+                            $this->urlIfood . '/' . $merchantId . '/interruptions/' . $interruptionId
+                        );
+
+        Log::debug('Response generate merchant ' . $merchantId . ' interruption: ' . var_export($response, true));
+
+        return json_decode($response->body(), true);
+    }
+
 }
